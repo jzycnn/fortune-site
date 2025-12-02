@@ -1,34 +1,66 @@
-// script.js
-// 所有请求发送至 /api/ai，由 EdgeOne 边缘函数代理
-const API_ENDPOINT = '/api/ai';
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('[data-action="generate"]');
+  buttons.forEach(btn => btn.addEventListener('click', handleGenerate));
+});
 
-/**
- * 调用 AI 算命服务
- * @param {string} type - 'bazi' | 'palm' | 'astrology' | 'tarot'
- * @param {object} data - 请求参数
- * @returns {Promise<{analysis: string}>}
- */
-export async function callFortune(type, data) {
-  const resp = await fetch(API_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ type, data })
-  });
+async function handleGenerate(event) {
+  const btn = event.target;
+  const type = btn.dataset.type;
+  let data = {};
 
-  if (!resp.ok) {
-    let msg = `服务暂时不可用 (${resp.status})`;
-    try {
-      const err = await resp.json();
-      msg = err.error || msg;
-    } catch (e) {}
-    throw new Error(msg);
+  switch (type) {
+    case 'bazi':
+      const birth = document.getElementById('birth')?.value;
+      const hour = document.getElementById('hour')?.value;
+      if (!birth || !hour) return alert('⚠️ 请填写出生日期和时辰');
+      data = { birth, hour };
+      break;
+
+    case 'astrology':
+      const birthday = document.getElementById('birthday')?.value;
+      if (!birthday) return alert('⚠️ 请输入生日');
+      data = { birthday };
+      break;
+
+    case 'tarot':
+      const question = document.getElementById('question')?.value?.trim();
+      if (!question) return alert('⚠️ 请提出一个问题');
+      data = { question };
+      break;
+
+    case 'palm':
+      data = {};
+      break;
+
+    default:
+      return alert('❌ 未知类型');
   }
 
-  const json = await resp.json();
-  if (json.error) {
-    throw new Error(json.error);
+  const resultEl = document.getElementById('result');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '🔮 解命中...';
+  resultEl.innerHTML = '';
+
+  try {
+    const res = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, data })
+    });
+
+    const result = await res.json();
+
+    if (!res.ok || result.error) {
+      throw new Error(result.error || 'AI 服务异常');
+    }
+
+    resultEl.textContent = result.analysis;
+  } catch (err) {
+    console.error(err);
+    resultEl.innerHTML = `<p style="color:#e74c3c;">❌ ${err.message}</p>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
   }
-  return json;
 }
