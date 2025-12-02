@@ -3,19 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>玄师观掌 · 手相解读</title>
+  <title>妙趣人生 | 玄师</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>玄师观掌</h1>
-    <p>无需上传掌纹，AI 将为你提供通用而深刻的解读</p>
+    <header class="header">
+      <div class="logo">妙趣人生</div>
+      <div class="slogan">机智至极</div>
+      <div class="controls">
+        <button class="control-btn" onclick="toggleLang()">文A</button>
+        <button class="control-btn" onclick="toggleDarkMode()">🌙</button>
+      </div>
+    </header>
 
-    <button type="button" data-action="generate" data-type="palm">查看手相</button>
+    <div class="form-container">
+      <h2 class="form-title">玄师</h2>
+      <p>请上传清晰的掌纹照片（建议自然光下拍摄左手掌心）</p>
 
-    <div id="result"></div>
+      <div class="upload-area">
+        <input type="file" id="palmImage" accept="image/*" style="display:none;">
+        <button type="button" class="action-btn primary" style="width:auto;" 
+                onclick="document.getElementById('palmImage').click()">
+          📷 上传掌纹
+        </button>
+        <img id="palmPreview" style="max-width:100%; margin-top:15px; display:none;" />
+      </div>
 
-    <a href="index.html" class="back">← 返回首页</a>
+      <button id="palmBtn" class="action-btn primary" disabled>解析掌纹</button>
+
+      <div id="result"></div>
+      <button class="action-btn secondary" onclick="window.history.back()">返回</button>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
