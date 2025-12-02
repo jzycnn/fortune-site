@@ -3,39 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>渊海子平 · 八字排盘</title>
+  <title>妙趣人生 | 渊海</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>渊海子平</h1>
-    <p>请输入您的出生信息</p>
+    <header class="header">
+      <div class="logo">妙趣人生</div>
+      <div class="slogan">机智至极</div>
+      <div class="controls">
+        <button class="control-btn" onclick="toggleLang()">文A</button>
+        <button class="control-btn" onclick="toggleDarkMode()">🌙</button>
+      </div>
+    </header>
 
-    <label>出生日期：</label>
-    <input type="date" id="birth" required />
+    <div class="form-container">
+      <h2 class="form-title">渊海</h2>
+      <p>请输入您的出生信息，排出八字命盘</p>
 
-    <label>出生时辰：</label>
-    <select id="hour" required>
-      <option value="">请选择</option>
-      <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
-      <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
-      <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
-      <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
-      <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
-      <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
-      <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
-      <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
-      <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
-      <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
-      <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
-      <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
-    </select>
+      <label>出生日期：</label>
+      <input type="date" id="birth" required />
 
-    <button type="button" data-action="generate" data-type="bazi">排盘解命</button>
+      <label>出生时辰：</label>
+      <select id="hour" required>
+        <option value="">请选择</option>
+        <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
+        <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
+        <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
+        <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
+        <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
+        <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
+        <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
+        <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
+        <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
+        <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
+        <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
+        <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
+      </select>
 
-    <div id="result"></div>
+      <button id="baziBtn" class="action-btn primary">排盘解命</button>
 
-    <a href="index.html" class="back">← 返回首页</a>
+      <div id="result"></div>
+      <button class="action-btn secondary" onclick="window.history.back()">返回</button>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
