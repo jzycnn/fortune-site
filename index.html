@@ -2,60 +2,40 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>妙趣人生 | 命运解析</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>妙趣人生 · 玄学四象</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-paper">
   <header>
     <h1 class="logo">妙趣人生</h1>
-    <p class="slogan">机智至极</p>
-    <div class="controls">
-      <button class="theme-toggle">🌙</button>
-    </div>
+    <p class="slogan">命运之门，由你开启</p>
   </header>
 
-  <main class="cards-grid">
-    <!-- 渊海 -->
-    <div class="card">
-      <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path fill="currentColor" d="M12 10v4l4 2"/></svg></div>
-      <h2>渊海</h2>
-      <p class="subtitle">八字命理宗师</p>
-      <p>严守节气，明辨旺衰。通过生辰八字推演一生造化，指引趋吉避凶之道。</p>
-      <button class="btn">来访宗师</button>
+  <main class="grid">
+    <div class="card" onclick="go('bazi.html')">
+      <h2>🌊 渊海</h2>
+      <p>输入生辰八字，推演命理格局</p>
     </div>
-
-    <!-- 玄师 -->
-    <div class="card">
-      <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path fill="currentColor" d="M12 10v4l4 2"/></svg></div>
-      <h2>玄师</h2>
-      <p class="subtitle">手相掌纹宗师</p>
-      <p>手为心印，掌为图谱。通过解读独一无二的掌纹，洞察性格基石与生命能量。</p>
-      <button class="btn">呈上手相</button>
+    <div class="card" onclick="go('palm.html')">
+      <h2>✋ 玄师</h2>
+      <p>上传手掌照片，解读掌纹奥秘</p>
     </div>
-
-    <!-- 星语者 -->
-    <div class="card">
-      <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-      <h2>星语者</h2>
-      <p class="subtitle">占星宗师</p>
-      <p>星辰列阵，灵魂蓝图。通过星盘相位透视潜意识驱动力，指引灵魂进化之路。</p>
-      <button class="btn">星盘连结</button>
+    <div class="card" onclick="go('astrology.html')">
+      <h2>🌌 星语者</h2>
+      <p>输入生日，解析星辰轨迹</p>
     </div>
-
-    <!-- 塔罗贤者 -->
-    <div class="card">
-      <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path fill="currentColor" d="M12 10v4l4 2"/></svg></div>
-      <h2>塔罗贤者</h2>
-      <p class="subtitle">神秘学家</p>
-      <p>图像叙事，直觉共感。借由78张智慧之牌，理清当下迷雾，指引行动方向。</p>
-      <button class="btn" onclick="window.location.href='tarot.html'">抽取牌灵</button>
+    <div class="card" onclick="go('tarot.html')">
+      <h2>🃏 塔罗贤者</h2>
+      <p>抽取三张牌，窥见过去现在未来</p>
     </div>
   </main>
 
-  <footer>
-    <p>© 妙趣人生 | 机智至极</p>
-  </footer>
+  <script>
+    function go(page) {
+      window.location.href = page;
+    }
+  </script>
 </body>
 </html>
