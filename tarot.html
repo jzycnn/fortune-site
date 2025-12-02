@@ -2,38 +2,53 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>塔罗问卜 | 妙趣人生</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>塔罗贤者 · 塔罗占卜</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-paper">
   <header>
     <h1 class="logo">妙趣人生</h1>
-    <p class="slogan">机智至极</p>
-    <div class="controls">
-      <button class="theme-toggle">🌙</button>
-    </div>
+    <p class="slogan">塔罗贤者 · 三张牌占卜</p>
   </header>
 
-  <main class="tarot-form">
+  <main class="form-page">
     <div class="card">
-      <h2 class="form-title">塔罗问卜</h2>
-      <textarea id="question" placeholder="请输入你的问题..." rows="4" maxlength="100"></textarea>
-      <div class="options">
-        <button class="option-btn">单牌占卜 (一事一问)</button>
-        <button class="option-btn active">圣三角 (过去-现在-未来)</button>
-      </div>
-      <div class="actions">
-        <button class="btn btn-outline" onclick="window.history.back()">返回</button>
-        <button class="btn btn-primary" onclick="drawCards()">✨ 抽取牌灵</button>
-      </div>
+      <h2>请默想您的问题</h2>
+      <textarea id="question" placeholder="例如：我近期的感情会如何发展？" rows="3"></textarea>
+      <button class="btn" onclick="submitTarot()">🃏 抽取三张牌</button>
+      <div id="result" class="result"></div>
     </div>
   </main>
 
-  <footer>
-    <p>© 妙趣人生 | Gemini 3 Pro 驱动</p>
-  </footer>
+  <script type="module">
+    import { callFortune } from './script.js';
 
-  <script src="script.js"></script>
+    async function submitTarot() {
+      const question = document.getElementById('question').value.trim();
+      if (!question) {
+        alert("请先默想一个问题！");
+        return;
+      }
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = "贤者正在洗牌...";
+
+      try {
+        // 可扩展：后端随机抽牌，此处固定示例
+        const cards = ["愚者", "女祭司", "命运之轮"];
+        const { analysis } = await callFortune('tarot', {
+          question,
+          past: cards[0],
+          present: cards[1],
+          future: cards[2]
+        });
+        resultDiv.innerHTML = `<p>${analysis}</p>`;
+      } catch (e) {
+        resultDiv.innerHTML = `<p style="color:#c0392b;">${e.message}</p>`;
+      }
+    }
+  </script>
 </body>
 </html>
