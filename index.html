@@ -3,32 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>妙趣人生 · AI 算命</title>
+  <title>妙趣人生</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1 class="logo">妙趣人生</h1>
-    <p class="subtitle">AI 命理师 · 温暖解读你的命运</p>
-    
+    <header class="header">
+      <div class="logo">妙趣人生</div>
+      <div class="slogan">机智至极</div>
+      <div class="controls">
+        <button class="control-btn" onclick="toggleLang()">文A</button>
+        <button class="control-btn" onclick="toggleDarkMode()">🌙</button>
+      </div>
+    </header>
+
     <div class="cards">
-      <a href="bazi.html" class="card">
-        <h2>渊海子平</h2>
-        <p>输入生辰，排出八字，分析命局</p>
-      </a>
-      <a href="palm.html" class="card">
-        <h2>玄师观掌</h2>
-        <p>手相解读，洞察生命轨迹</p>
-      </a>
-      <a href="astrology.html" class="card">
-        <h2>星语者</h2>
-        <p>星座运势，指引未来方向</p>
-      </a>
-      <a href="tarot.html" class="card">
-        <h2>塔罗贤者</h2>
-        <p>抽取塔罗，解答心中疑惑</p>
-      </a>
+      <!-- 湘海 - 八字 -->
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <div class="card-title">渊海</div>
+        <div class="card-desc">八字命理宗师<br>严守节气，明辨旺衰。通过生辰八字推演一生造化，指引趋吉避凶之道。</div>
+        <button class="card-btn" onclick="window.location='bazi.html'">拜访宗师</button>
+      </div>
+
+      <!-- 玄师 - 手相 -->
+      <div class="card">
+        <div class="card-icon">✋</div>
+        <div class="card-title">玄师</div>
+        <div class="card-desc">手相掌纹宗师<br>手为心印，掌为图谱。通过解读独一无二的掌纹，洞察性格基石与生命能量。</div>
+        <button class="card-btn" onclick="window.location='palm.html'">呈上手相</button>
+      </div>
+
+      <!-- 星语者 - 星座 -->
+      <div class="card">
+        <div class="card-icon">⭐</div>
+        <div class="card-title">星语者</div>
+        <div class="card-desc">占星宗师<br>星辰列阵，灵魂蓝图。通过星盘相位透视潜意识驱动力，指引灵魂进化之路。</div>
+        <button class="card-btn" onclick="window.location='astrology.html'">星盘连结</button>
+      </div>
+
+      <!-- 塔罗贤者 - 塔罗 -->
+      <div class="card">
+        <div class="card-icon">🃏</div>
+        <div class="card-title">塔罗贤者</div>
+        <div class="card-desc">神秘学家<br>图像叙事，直觉共感。借由78张智慧之牌，理清当下迷雾，指引行动方向。</div>
+        <button class="card-btn" onclick="window.location='tarot.html'">抽取牌灵</button>
+      </div>
     </div>
   </div>
+
+  <script>
+    function toggleLang() { alert('语言切换功能待实现'); }
+    function toggleDarkMode() { 
+      document.body.style.backgroundColor = '#1a1a1a';
+      document.querySelector('.header').style.color = 'white';
+      document.querySelectorAll('.card').forEach(c => c.style.backgroundColor = '#1a1a1a');
+    }
+  </script>
 </body>
 </html>
