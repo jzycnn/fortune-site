@@ -1,54 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>塔罗贤者 · 塔罗占卜</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-paper">
-  <header>
-    <h1 class="logo">妙趣人生</h1>
-    <p class="slogan">塔罗贤者 · 三张牌占卜</p>
-  </header>
+<body>
+  <div class="container">
+    <h1>塔罗贤者</h1>
+    <p>请提出一个你想问的问题，AI 将为你抽取三张塔罗牌并解读</p>
 
-  <main class="form-page">
-    <div class="card">
-      <h2>请默想您的问题</h2>
-      <textarea id="question" placeholder="例如：我近期的感情会如何发展？" rows="3"></textarea>
-      <button class="btn" onclick="submitTarot()">🃏 抽取三张牌</button>
-      <div id="result" class="result"></div>
-    </div>
-  </main>
+    <label>你的问题：</label>
+    <textarea id="question" placeholder="例如：我近期的感情会顺利吗？" rows="3"></textarea>
 
-  <script type="module">
-    import { callFortune } from './script.js';
+    <button type="button" data-action="generate" data-type="tarot">抽取塔罗牌</button>
 
-    async function submitTarot() {
-      const question = document.getElementById('question').value.trim();
-      if (!question) {
-        alert("请先默想一个问题！");
-        return;
-      }
+    <div id="result"></div>
 
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = "贤者正在洗牌...";
-
-      try {
-        // 可扩展：后端随机抽牌，此处固定示例
-        const cards = ["愚者", "女祭司", "命运之轮"];
-        const { analysis } = await callFortune('tarot', {
-          question,
-          past: cards[0],
-          present: cards[1],
-          future: cards[2]
-        });
-        resultDiv.innerHTML = `<p>${analysis}</p>`;
-      } catch (e) {
-        resultDiv.innerHTML = `<p style="color:#c0392b;">${e.message}</p>`;
-      }
-    }
-  </script>
+    <a href="index.html" class="back">← 返回首页</a>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
