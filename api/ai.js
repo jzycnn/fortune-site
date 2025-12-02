@@ -1,16 +1,8 @@
-// api/ai.js - Vercel Serverless Function (Edge Runtime)
-export const config = {
-  runtime: 'edge', // 使用边缘运行时（更快、更便宜）
-};
-
+// api/ai.js - 安全、兼容、纯 Edge Runtime 写法
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
-if (!DEEPSEEK_API_KEY) {
-  console.warn('⚠️ DEEPSEEK_API_KEY 未设置，请在 Vercel 环境变量中配置');
-}
-
-export default async function handler(request) {
-  // 只允许 POST
+export default async function (request) {
+  // 只处理 POST
   if (request.method !== 'POST') {
     return new Response(JSON.stringify({ error: '仅支持 POST 请求' }), {
       status: 405,
@@ -19,7 +11,9 @@ export default async function handler(request) {
   }
 
   try {
-    const { type, data } = await request.json();
+    const url = new URL(request.url);
+    const body = await request.json().catch(() => ({}));
+    const { type, data } = body;
 
     const validTypes = ['bazi', 'palm', 'astrology', 'tarot'];
     if (!validTypes.includes(type)) {
@@ -30,13 +24,12 @@ export default async function handler(request) {
     }
 
     if (!DEEPSEEK_API_KEY) {
-      return new Response(JSON.stringify({ error: '服务器未配置 AI 密钥' }), {
+      return new Response(JSON.stringify({ error: 'AI 密钥未配置' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // 构造 prompt（同之前逻辑）
     let prompt = '';
     switch (type) {
       case 'bazi':
@@ -53,9 +46,10 @@ export default async function handler(request) {
         prompt = `你是一位专业占星师。用户生日是 ${data.birthday}。请计算其太阳、月亮、上升星座（若信息不足可合理假设），并给出性格特征与近期（未来1-3个月）运势分析。语气如知心朋友，避免危言耸听。`;
         break;
       case 'tarot':
-        if (!data?.question || !data?.past || !data?.present || !data?.future)
-          return new Response(JSON.stringify({ error: '缺少塔罗牌或问题' }), { status: 400 });
-        prompt = `你是一位智慧的塔罗贤者。用户的问题是：“${data.question}”。抽到的三张牌分别是：过去-${data.past}，现在-${data.present}，未来-${data.future}。请结合牌义，给出深刻、有启发性且温暖的解读，帮助用户看清局势、做出选择。`;
+        if (!data?.question)
+          return new Response(JSON.stringify({ error: '请提出一个问题' }), { status: 400 });
+        // 简化：不再强制传牌，由 AI 自行抽（更灵活）
+        prompt = `你是一位智慧的塔罗贤者。用户的问题是：“${data.question}”。请抽取三张塔罗牌（过去、现在、未来），并结合牌义给出深刻、温暖且有启发性的解读。`;
         break;
     }
 
@@ -72,10 +66,12 @@ export default async function handler(request) {
         temperature: 0.7,
         max_tokens: 600,
       }),
+      // Edge Runtime 支持 AbortSignal.timeout
+      signal: AbortSignal.timeout(25000),
     });
 
     if (!resp.ok) {
-      console.error('DeepSeek error:', await resp.text());
+      console.error('DeepSeek error:', resp.status, await resp.text());
       return new Response(JSON.stringify({ error: 'AI 服务暂时不可用' }), {
         status: 502,
         headers: { 'Content-Type': 'application/json' },
@@ -94,8 +90,8 @@ export default async function handler(request) {
     });
 
   } catch (error) {
-    console.error('Function error:', error);
-    return new Response(JSON.stringify({ error: '内部服务器错误' }), {
+    console.error('Edge Function Error:', error.message);
+    return new Response(JSON.stringify({ error: '服务器内部错误' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
