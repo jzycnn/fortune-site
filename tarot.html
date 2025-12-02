@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>塔罗问卜 | 妙趣人生</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-paper">
+  <header>
+    <h1 class="logo">妙趣人生</h1>
+    <p class="slogan">机智至极</p>
+    <div class="controls">
+      <button class="theme-toggle">🌙</button>
+    </div>
+  </header>
+
+  <main class="tarot-form">
+    <div class="card">
+      <h2 class="form-title">塔罗问卜</h2>
+      <textarea id="question" placeholder="请输入你的问题..." rows="4" maxlength="100"></textarea>
+      <div class="options">
+        <button class="option-btn">单牌占卜 (一事一问)</button>
+        <button class="option-btn active">圣三角 (过去-现在-未来)</button>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" onclick="window.history.back()">返回</button>
+        <button class="btn btn-primary" onclick="drawCards()">✨ 抽取牌灵</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 妙趣人生 | Gemini 3 Pro 驱动</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
