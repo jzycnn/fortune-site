@@ -1,45 +1,76 @@
+// script.js
 document.addEventListener('DOMContentLoaded', () => {
-  const buttons = document.querySelectorAll('[data-action="generate"]');
-  buttons.forEach(btn => btn.addEventListener('click', handleGenerate));
-});
-
-async function handleGenerate(event) {
-  const btn = event.target;
-  const type = btn.dataset.type;
-  let data = {};
-
-  switch (type) {
-    case 'bazi':
+  // 八字
+  const baziBtn = document.getElementById('baziBtn');
+  if (baziBtn) {
+    baziBtn.addEventListener('click', () => {
       const birth = document.getElementById('birth')?.value;
       const hour = document.getElementById('hour')?.value;
-      if (!birth || !hour) return alert('⚠️ 请填写出生日期和时辰');
-      data = { birth, hour };
-      break;
+      if (!birth || !hour) return alert('请填写完整信息');
+      callAI('bazi', { birth, hour });
+    });
+  }
 
-    case 'astrology':
+  // 手相
+  const palmInput = document.getElementById('palmImage');
+  const palmBtn = document.getElementById('palmBtn');
+  const preview = document.getElementById('palmPreview');
+
+  palmInput?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        preview.src = reader.result;
+        preview.style.display = 'block';
+        palmBtn.disabled = false;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  palmBtn?.addEventListener('click', () => {
+    const base64 = preview.src.split(',')[1];
+    if (!base64) return;
+    callAI('palm', { image: base64 });
+  });
+
+  // 星座
+  const astroBtn = document.getElementById('astroBtn');
+  if (astroBtn) {
+    astroBtn.addEventListener('click', () => {
       const birthday = document.getElementById('birthday')?.value;
-      if (!birthday) return alert('⚠️ 请输入生日');
-      data = { birthday };
-      break;
+      if (!birthday) return alert('请输入生日');
+      callAI('astrology', { birthday });
+    });
+  }
 
-    case 'tarot':
+  // 塔罗
+  const tarotBtn = document.getElementById('tarotBtn');
+  if (tarotBtn) {
+    tarotBtn.addEventListener('click', () => {
       const question = document.getElementById('question')?.value?.trim();
-      if (!question) return alert('⚠️ 请提出一个问题');
-      data = { question };
-      break;
+      if (!question) return alert('请提出一个问题');
+      callAI('tarot', { question });
+    });
+  }
+});
 
-    case 'palm':
-      data = {};
-      break;
-
-    default:
-      return alert('❌ 未知类型');
+async function callAI(type, data) {
+  const btnMap = {
+    bazi: 'baziBtn',
+    palm: 'palmBtn',
+    astrology: 'astroBtn',
+    tarot: 'tarotBtn'
+  };
+  const btn = document.getElementById(btnMap[type]);
+  const originalText = btn?.textContent;
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = '🔮 解命中...';
   }
 
   const resultEl = document.getElementById('result');
-  const originalText = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = '🔮 解命中...';
   resultEl.innerHTML = '';
 
   try {
@@ -50,17 +81,16 @@ async function handleGenerate(event) {
     });
 
     const result = await res.json();
-
-    if (!res.ok || result.error) {
-      throw new Error(result.error || 'AI 服务异常');
-    }
+    if (!res.ok || result.error) throw new Error(result.error || 'AI 服务异常');
 
     resultEl.textContent = result.analysis;
   } catch (err) {
+    resultEl.innerHTML = `<p style="color:#c3272b;">❌ ${err.message}</p>`;
     console.error(err);
-    resultEl.innerHTML = `<p style="color:#e74c3c;">❌ ${err.message}</p>`;
   } finally {
-    btn.disabled = false;
-    btn.textContent = originalText;
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
   }
 }
