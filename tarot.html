@@ -3,22 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>塔罗贤者 · 塔罗占卜</title>
+  <title>妙趣人生 | 塔罗贤者</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>塔罗贤者</h1>
-    <p>请提出一个你想问的问题，AI 将为你抽取三张塔罗牌并解读</p>
+    <header class="header">
+      <div class="logo">妙趣人生</div>
+      <div class="slogan">机智至极</div>
+      <div class="controls">
+        <button class="control-btn" onclick="toggleLang()">文A</button>
+        <button class="control-btn" onclick="toggleDarkMode()">🌙</button>
+      </div>
+    </header>
 
-    <label>你的问题：</label>
-    <textarea id="question" placeholder="例如：我近期的感情会顺利吗？" rows="3"></textarea>
+    <div class="form-container">
+      <h2 class="form-title">塔罗贤者</h2>
+      <p>请提出一个你想问的问题，AI 将为你抽取三张塔罗牌</p>
 
-    <button type="button" data-action="generate" data-type="tarot">抽取塔罗牌</button>
+      <textarea id="question" class="form-input" rows="3" placeholder="例如：我近期的感情会顺利吗？"></textarea>
 
-    <div id="result"></div>
+      <div class="radio-group">
+        <button class="radio-btn active">单牌占卜 (一事一问)</button>
+        <button class="radio-btn">圣三角 (过去-现在-未来)</button>
+      </div>
 
-    <a href="index.html" class="back">← 返回首页</a>
+      <div class="form-actions">
+        <button class="action-btn secondary" onclick="window.history.back()">返回</button>
+        <button id="tarotBtn" class="action-btn primary">抽取牌灵</button>
+      </div>
+
+      <div id="result"></div>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
