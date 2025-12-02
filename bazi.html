@@ -1,15 +1,63 @@
-<script type="module">
-  import { callFortune } from './script.js';
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>渊海 · 八字命理</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-paper">
+  <header>
+    <h1 class="logo">妙趣人生</h1>
+    <p class="slogan">渊海 · 八字命理</p>
+  </header>
 
-  async function submitBazi() {
-    const birth = document.getElementById('birthdate').value;
-    const hour = document.getElementById('hour').value;
-    
-    try {
-      const { analysis } = await callFortune('bazi', { birth, hour });
-      document.getElementById('result').innerHTML = `<p>${analysis}</p>`;
-    } catch (e) {
-      alert(e.message);
+  <main class="form-page">
+    <div class="card">
+      <h2>请输入您的生辰</h2>
+      <input type="date" id="birthdate" max="2025-12-31" required />
+      <select id="hour">
+        <option value="">请选择出生时辰</option>
+        <option value="子时 (23:00-01:00)">子时 (23:00-01:00)</option>
+        <option value="丑时 (01:00-03:00)">丑时 (01:00-03:00)</option>
+        <option value="寅时 (03:00-05:00)">寅时 (03:00-05:00)</option>
+        <option value="卯时 (05:00-07:00)">卯时 (05:00-07:00)</option>
+        <option value="辰时 (07:00-09:00)">辰时 (07:00-09:00)</option>
+        <option value="巳时 (09:00-11:00)">巳时 (09:00-11:00)</option>
+        <option value="午时 (11:00-13:00)">午时 (11:00-13:00)</option>
+        <option value="未时 (13:00-15:00)">未时 (13:00-15:00)</option>
+        <option value="申时 (15:00-17:00)">申时 (15:00-17:00)</option>
+        <option value="酉时 (17:00-19:00)">酉时 (17:00-19:00)</option>
+        <option value="戌时 (19:00-21:00)">戌时 (19:00-21:00)</option>
+        <option value="亥时 (21:00-23:00)">亥时 (21:00-23:00)</option>
+      </select>
+      <button class="btn" onclick="submitBazi()">✨ 排盘解命</button>
+      <div id="result" class="result"></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { callFortune } from './script.js';
+
+    async function submitBazi() {
+      const birth = document.getElementById('birthdate').value;
+      const hour = document.getElementById('hour').value;
+      if (!birth || !hour) {
+        alert("请完整填写生辰信息！");
+        return;
+      }
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = "AI 宗师正在推演命盘...";
+
+      try {
+        const { analysis } = await callFortune('bazi', { birth, hour });
+        resultDiv.innerHTML = `<p>${analysis}</p>`;
+      } catch (e) {
+        resultDiv.innerHTML = `<p style="color:#c0392b;">${e.message}</p>`;
+      }
     }
-  }
-</script>
+  </script>
+</body>
+</html>
