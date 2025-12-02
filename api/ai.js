@@ -1,8 +1,6 @@
-// api/ai.js - 安全、兼容、纯 Edge Runtime 写法
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
 export default async function (request) {
-  // 只处理 POST
   if (request.method !== 'POST') {
     return new Response(JSON.stringify({ error: '仅支持 POST 请求' }), {
       status: 405,
@@ -11,23 +9,15 @@ export default async function (request) {
   }
 
   try {
-    const url = new URL(request.url);
-    const body = await request.json().catch(() => ({}));
-    const { type, data } = body;
+    const { type, data } = await request.json();
 
     const validTypes = ['bazi', 'palm', 'astrology', 'tarot'];
     if (!validTypes.includes(type)) {
-      return new Response(JSON.stringify({ error: '不支持的算命类型' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(JSON.stringify({ error: '不支持的算命类型' }), { status: 400 });
     }
 
     if (!DEEPSEEK_API_KEY) {
-      return new Response(JSON.stringify({ error: 'AI 密钥未配置' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new Response(JSON.stringify({ error: '服务器未配置 AI 密钥' }), { status: 500 });
     }
 
     let prompt = '';
@@ -48,12 +38,10 @@ export default async function (request) {
       case 'tarot':
         if (!data?.question)
           return new Response(JSON.stringify({ error: '请提出一个问题' }), { status: 400 });
-        // 简化：不再强制传牌，由 AI 自行抽（更灵活）
         prompt = `你是一位智慧的塔罗贤者。用户的问题是：“${data.question}”。请抽取三张塔罗牌（过去、现在、未来），并结合牌义给出深刻、温暖且有启发性的解读。`;
         break;
     }
 
-    // 调用 DeepSeek
     const resp = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
@@ -66,16 +54,12 @@ export default async function (request) {
         temperature: 0.7,
         max_tokens: 600,
       }),
-      // Edge Runtime 支持 AbortSignal.timeout
       signal: AbortSignal.timeout(25000),
     });
 
     if (!resp.ok) {
-      console.error('DeepSeek error:', resp.status, await resp.text());
-      return new Response(JSON.stringify({ error: 'AI 服务暂时不可用' }), {
-        status: 502,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      console.error('DeepSeek error:', await resp.text());
+      return new Response(JSON.stringify({ error: 'AI 服务暂时不可用' }), { status: 502 });
     }
 
     const result = await resp.json();
@@ -90,10 +74,7 @@ export default async function (request) {
     });
 
   } catch (error) {
-    console.error('Edge Function Error:', error.message);
-    return new Response(JSON.stringify({ error: '服务器内部错误' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    console.error('Function error:', error.message);
+    return new Response(JSON.stringify({ error: '内部服务器错误' }), { status: 500 });
   }
 }
