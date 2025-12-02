@@ -3,22 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>星语者 · 星座运势</title>
+  <title>妙趣人生 | 星语者</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>星语者</h1>
-    <p>请输入您的生日，获取专属星盘解读</p>
+    <header class="header">
+      <div class="logo">妙趣人生</div>
+      <div class="slogan">机智至极</div>
+      <div class="controls">
+        <button class="control-btn" onclick="toggleLang()">文A</button>
+        <button class="control-btn" onclick="toggleDarkMode()">🌙</button>
+      </div>
+    </header>
 
-    <label>生日：</label>
-    <input type="date" id="birthday" required />
+    <div class="form-container">
+      <h2 class="form-title">星语者</h2>
+      <p>输入生日，获取专属星盘与近期运势</p>
 
-    <button type="button" data-action="generate" data-type="astrology">生成星盘解读</button>
+      <label>您的生日：</label>
+      <input type="date" id="birthday" required />
 
-    <div id="result"></div>
+      <button id="astroBtn" class="action-btn primary">生成星盘解读</button>
 
-    <a href="index.html" class="back">← 返回首页</a>
+      <div id="result"></div>
+      <button class="action-btn secondary" onclick="window.history.back()">返回</button>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
