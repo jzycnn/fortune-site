@@ -1,0 +1,15 @@
+<script type="module">
+  import { callFortune } from './script.js';
+
+  async function submitBazi() {
+    const birth = document.getElementById('birthdate').value;
+    const hour = document.getElementById('hour').value;
+    
+    try {
+      const { analysis } = await callFortune('bazi', { birth, hour });
+      document.getElementById('result').innerHTML = `<p>${analysis}</p>`;
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+</script>
