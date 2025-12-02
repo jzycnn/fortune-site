@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>玄师 · 手相分析</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-paper">
+  <header>
+    <h1 class="logo">妙趣人生</h1>
+    <p class="slogan">玄师 · 手相分析</p>
+  </header>
+
+  <main class="form-page">
+    <div class="card">
+      <h2>请上传您的手掌照片</h2>
+      <p>确保掌心清晰、光线充足</p>
+      <input type="file" id="palmUpload" accept="image/*" />
+      <img id="preview" style="max-width:100%; margin-top:1rem; display:none; border-radius:8px;" />
+      <button class="btn" onclick="submitPalm()" style="margin-top:1rem;">🔍 开始解析</button>
+      <div id="result" class="result"></div>
+    </div>
+  </main>
+
+  <script>
+    function previewImage(event) {
+      const img = document.getElementById('preview');
+      const file = event.target.files[0];
+      if (file) {
+        img.src = URL.createObjectURL(file);
+        img.style.display = 'block';
+      }
+    }
+    document.getElementById('palmUpload').addEventListener('change', previewImage);
+  </script>
+
+  <script type="module">
+    import { callFortune } from './script.js';
+
+    async function submitPalm() {
+      const fileInput = document.getElementById('palmUpload');
+      if (!fileInput.files.length) {
+        alert("请先上传手掌照片！");
+        return;
+      }
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = "玄师正在观纹...";
+
+      try {
+        // 注意：当前版本不实际上传图片（仅触发 AI 解读）
+        // 如需真实图像分析，需在边缘函数中处理 Base64
+        const { analysis } = await callFortune('palm', {});
+        resultDiv.innerHTML = `<p>${analysis}</p>`;
+      } catch (e) {
+        resultDiv.innerHTML = `<p style="color:#c0392b;">${e.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
