@@ -1,48 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>星语者 · 星座命理</title>
+  <title>星语者 · 星座运势</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-paper">
-  <header>
-    <h1 class="logo">妙趣人生</h1>
-    <p class="slogan">星语者 · 星座命理</p>
-  </header>
+<body>
+  <div class="container">
+    <h1>星语者</h1>
+    <p>请输入您的生日，获取专属星盘解读</p>
 
-  <main class="form-page">
-    <div class="card">
-      <h2>请输入您的生日</h2>
-      <input type="date" id="birthday" max="2025-12-31" required />
-      <p>（精确到日即可）</p>
-      <button class="btn" onclick="submitAstro()">✨ 生成星盘</button>
-      <div id="result" class="result"></div>
-    </div>
-  </main>
+    <label>生日：</label>
+    <input type="date" id="birthday" required />
 
-  <script type="module">
-    import { callFortune } from './script.js';
+    <button type="button" data-action="generate" data-type="astrology">生成星盘解读</button>
 
-    async function submitAstro() {
-      const birthday = document.getElementById('birthday').value;
-      if (!birthday) {
-        alert("请输入生日！");
-        return;
-      }
+    <div id="result"></div>
 
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = "星辰正在排列...";
-
-      try {
-        const { analysis } = await callFortune('astrology', { birthday });
-        resultDiv.innerHTML = `<p>${analysis}</p>`;
-      } catch (e) {
-        resultDiv.innerHTML = `<p style="color:#c0392b;">${e.message}</p>`;
-      }
-    }
-  </script>
+    <a href="index.html" class="back">← 返回首页</a>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
